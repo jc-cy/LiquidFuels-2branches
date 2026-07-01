@@ -1,0 +1,11 @@
+{
+  "block.liquidfuels.small_fuel_tank": "Small Fuel Tank",
+  "block.liquidfuels.fuel_tank": "Fuel Tank",
+  "block.liquidfuels.large_fuel_tank": "Large Fuel Tank",
+  "itemGroup.liquidfuels.main": "Liquid Fuels",
+  "tooltip.liquidfuels.empty": "Empty - %s mB",
+  "tooltip.liquidfuels.fluid": "%s: %s / %s mB",
+  "tooltip.liquidfuels.fuel_unit": "Consumes %s mB per fuel use",
+  "jei.liquidfuels.liquid_fuel": "Liquid Fuel",
+  "jei.liquidfuels.burn_time": "Smelts %s items"
+}

@@ -1,0 +1,11 @@
+{
+  "block.liquidfuels.small_fuel_tank": "小油桶",
+  "block.liquidfuels.fuel_tank": "中油桶",
+  "block.liquidfuels.large_fuel_tank": "大油桶",
+  "itemGroup.liquidfuels.main": "液体燃料",
+  "tooltip.liquidfuels.empty": "空 - %s mB",
+  "tooltip.liquidfuels.fluid": "%s：%s / %s mB",
+  "tooltip.liquidfuels.fuel_unit": "每次作为燃料消耗 %s mB",
+  "jei.liquidfuels.liquid_fuel": "液体燃料",
+  "jei.liquidfuels.burn_time": "可烧炼%s个物品"
+}
