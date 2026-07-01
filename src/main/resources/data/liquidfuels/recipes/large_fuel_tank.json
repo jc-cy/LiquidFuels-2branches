@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I I",
+    " B ",
+    "   "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "liquidfuels:fuel_tank"
+    }
+  },
+  "result": {
+    "item": "liquidfuels:large_fuel_tank"
+  }
+}

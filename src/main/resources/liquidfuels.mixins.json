@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.g1739.liquidfuels.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "liquidfuels.refmap.json",
+  "mixins": [
+    "AbstractContainerMenuMixin",
+    "ImmersiveAircraftEngineVehicleMixin",
+    "ImmersiveAircraftUtilsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

@@ -1,0 +1,71 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "${mod_license}"
+
+[[mixins]]
+config = "liquidfuels.mixins.json"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "Liquid Fuels"
+authors = "交错次元"
+credits = "美术: witzig_heidi(鱼)"
+description = '''Liquid Fuels / 液体燃料 是一个配置驱动的通用流体燃料转换模组。
+
+它提供小油桶、中油桶、大油桶三种可携带、可放置的储液容器，容量分别为 1000 mB、5000 mB、20000 mB。
+油桶物品与方块都暴露 NeoForge 标准流体能力，可与流体容器、管道和其他模组的流体系统交互。
+玩家可以通过全局配置 config/liquidfuels-common.toml 声明可燃流体，支持精确流体 ID 与 #namespace:tag 流体标签。
+配置值按每 1000 mB 的燃烧 tick 填写；实际作为燃料时每次消耗 100 mB，保留油桶本体。
+JEI 使用紧凑的液体到油桶配方展示当前配置中实际存在的可燃流体，流体 tooltip 会显示约可烧炼物品数量。
+模组还包含背包内右键倒液交互，并对 Immersive Aircraft 的燃料消费做可选兼容。
+
+Chinese Notice
+本模组采用 ARR 协议。仅允许作者未修改发布版免费用于个人、非商业、合法的正常游戏使用。
+未经作者事先书面许可，禁止二次分发、整合打包、修改后二次发布、商业使用或 AI 训练。
+完整条款见随附 LICENSE 与 DISCLAIMER。
+以上限制是防止不怀好意的人，如无恶意可以放宽全部限制。
+
+Liquid Fuels / 液体燃料 is a configuration-driven universal fluid fuel converter.
+
+It adds small, medium, and large fuel tanks with 1000 mB, 5000 mB, and 20000 mB capacity.
+Tank items and placed tank blocks expose standard NeoForge fluid capabilities for interaction with fluid containers, pipes, and other mods.
+Players can define burnable fluids in the global config file config/liquidfuels-common.toml using exact fluid ids or #namespace:tag fluid tags.
+Config values are burn ticks per 1000 mB; each fuel use consumes 100 mB and keeps the tank item.
+JEI uses compact fluid-to-tank recipes for configured fuels that exist in the current game, with the approximate item burn count in the fluid tooltip.
+The mod also supports inventory right-click fluid transfer and optional Immersive Aircraft fuel consumption compatibility.
+
+English Notice
+Distributed under ARR.
+No redistribution, repacks, modified re-releases, commercial use, or AI training without prior written permission.
+See LICENSE and DISCLAIMER for the full terms.
+The above restrictions are in place to prevent malicious individuals. If there is no ill intent, all the restrictions can be relaxed.
+'''
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "[${minecraft_version},1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "jei"
+type = "optional"
+versionRange = "[19.0.0,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.${mod_id}]]
+modId = "immersive_aircraft"
+type = "optional"
+versionRange = "[1.4.0,)"
+ordering = "AFTER"
+side = "BOTH"

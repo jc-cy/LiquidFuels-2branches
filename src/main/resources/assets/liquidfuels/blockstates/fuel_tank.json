@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "liquidfuels:block/fuel_tank" },
+    "facing=east": { "model": "liquidfuels:block/fuel_tank", "y": 90 },
+    "facing=south": { "model": "liquidfuels:block/fuel_tank", "y": 180 },
+    "facing=west": { "model": "liquidfuels:block/fuel_tank", "y": 270 }
+  }
+}

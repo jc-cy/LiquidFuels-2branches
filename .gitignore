@@ -1,0 +1,16 @@
+*
+
+!/.gitignore
+!/build.gradle.kts
+!/settings.gradle.kts
+!/gradle.properties
+!/gradlew.bat
+!/一键打包.bat
+
+!/gradle/
+!/gradle/wrapper/
+!/gradle/wrapper/gradle-wrapper.jar
+!/gradle/wrapper/gradle-wrapper.properties
+
+!/src/
+!/src/**
