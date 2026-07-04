@@ -1,5 +1,6 @@
 package com.g1739.liquidfuels.util;
 
+import com.g1739.liquidfuels.item.FuelTankItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -10,11 +11,9 @@ import java.util.Objects;
 
 public final class FuelTankItemFluidHandler implements IFluidHandlerItem {
     private final ItemStack container;
-    private final int capacity;
 
-    public FuelTankItemFluidHandler(ItemStack container, int capacity) {
+    public FuelTankItemFluidHandler(ItemStack container) {
         this.container = container;
-        this.capacity = capacity;
     }
 
     @Override
@@ -29,12 +28,12 @@ public final class FuelTankItemFluidHandler implements IFluidHandlerItem {
 
     @Override
     public FluidStack getFluidInTank(int tank) {
-        return tank == 0 ? FuelTankContents.getFluid(container) : FluidStack.EMPTY;
+        return tank == 0 ? getStoredFluid() : FluidStack.EMPTY;
     }
 
     @Override
     public int getTankCapacity(int tank) {
-        return tank == 0 ? capacity : 0;
+        return tank == 0 ? getCapacity() : 0;
     }
 
     @Override
@@ -48,7 +47,11 @@ public final class FuelTankItemFluidHandler implements IFluidHandlerItem {
             return 0;
         }
 
-        FluidStack current = FuelTankContents.getFluid(container);
+        int capacity = getCapacity();
+        if (capacity <= 0) {
+            return 0;
+        }
+        FluidStack current = getStoredFluid();
         if (!current.isEmpty() && !isSameFluid(current, resource)) {
             return 0;
         }
@@ -72,7 +75,7 @@ public final class FuelTankItemFluidHandler implements IFluidHandlerItem {
             return FluidStack.EMPTY;
         }
 
-        FluidStack current = FuelTankContents.getFluid(container);
+        FluidStack current = getStoredFluid();
         if (current.isEmpty() || !isSameFluid(current, resource)) {
             return FluidStack.EMPTY;
         }
@@ -86,7 +89,7 @@ public final class FuelTankItemFluidHandler implements IFluidHandlerItem {
             return FluidStack.EMPTY;
         }
 
-        FluidStack current = FuelTankContents.getFluid(container);
+        FluidStack current = getStoredFluid();
         if (current.isEmpty()) {
             return FluidStack.EMPTY;
         }
@@ -97,9 +100,25 @@ public final class FuelTankItemFluidHandler implements IFluidHandlerItem {
 
         if (action.execute()) {
             current.shrink(drained);
+            if (current.getAmount() <= 0) {
+                current = FluidStack.EMPTY;
+            }
             FuelTankContents.setFluid(container, current);
         }
         return result;
+    }
+
+    private int getCapacity() {
+        return container.getItem() instanceof FuelTankItem tankItem ? tankItem.getCapacity() : 0;
+    }
+
+    private FluidStack getStoredFluid() {
+        FluidStack current = FuelTankContents.getFluid(container);
+        int capacity = getCapacity();
+        if (!current.isEmpty() && capacity > 0 && current.getAmount() > capacity) {
+            current.setAmount(capacity);
+        }
+        return current;
     }
 
     private static boolean isSameFluid(FluidStack first, FluidStack second) {

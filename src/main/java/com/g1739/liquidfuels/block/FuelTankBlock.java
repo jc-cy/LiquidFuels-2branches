@@ -1,6 +1,7 @@
 package com.g1739.liquidfuels.block;
 
 import com.g1739.liquidfuels.blockentity.FuelTankBlockEntity;
+import com.g1739.liquidfuels.config.LiquidFuelConfig;
 import com.g1739.liquidfuels.item.FuelTankItem;
 import com.g1739.liquidfuels.util.FuelTankContents;
 import net.minecraft.core.BlockPos;
@@ -40,16 +41,16 @@ public class FuelTankBlock extends BaseEntityBlock implements EntityBlock {
     private static final VoxelShape LARGE_SHAPE_NORTH_SOUTH = Shapes.box(0.155625D, 0.0D, 0.120361875D, 0.844375D, 1.0D, 0.875D);
     private static final VoxelShape LARGE_SHAPE_EAST_WEST = Shapes.box(0.125D, 0.0D, 0.155625D, 0.879638125D, 1.0D, 0.844375D);
 
-    private final int capacity;
+    private final int defaultCapacity;
 
-    public FuelTankBlock(int capacity, Properties properties) {
+    public FuelTankBlock(int defaultCapacity, Properties properties) {
         super(properties);
-        this.capacity = capacity;
+        this.defaultCapacity = defaultCapacity;
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     public int getCapacity() {
-        return capacity;
+        return LiquidFuelConfig.getTankCapacity(defaultCapacity);
     }
 
     @Override
@@ -80,10 +81,10 @@ public class FuelTankBlock extends BaseEntityBlock implements EntityBlock {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
-        if (capacity <= 1000) {
+        if (defaultCapacity <= LiquidFuelConfig.DEFAULT_SMALL_FUEL_TANK_CAPACITY) {
             return facing.getAxis() == Direction.Axis.X ? SMALL_SHAPE_EAST_WEST : SMALL_SHAPE_NORTH_SOUTH;
         }
-        if (capacity >= 20000) {
+        if (defaultCapacity >= LiquidFuelConfig.DEFAULT_LARGE_FUEL_TANK_CAPACITY) {
             return facing.getAxis() == Direction.Axis.X ? LARGE_SHAPE_EAST_WEST : LARGE_SHAPE_NORTH_SOUTH;
         }
         return facing.getAxis() == Direction.Axis.X ? MEDIUM_SHAPE_EAST_WEST : MEDIUM_SHAPE_NORTH_SOUTH;

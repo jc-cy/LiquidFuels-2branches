@@ -41,7 +41,7 @@ public class FuelTankBlockEntity extends BlockEntity {
     }
 
     public FluidStack getFluid() {
-        return fluid.copy();
+        return getStoredFluid();
     }
 
     public void setFluid(FluidStack stack) {
@@ -65,8 +65,9 @@ public class FuelTankBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        if (!fluid.isEmpty()) {
-            tag.put(FuelTankContents.FLUID_TAG, fluid.writeToNBT(new CompoundTag()));
+        FluidStack stored = getStoredFluid();
+        if (!stored.isEmpty()) {
+            tag.put(FuelTankContents.FLUID_TAG, stored.writeToNBT(new CompoundTag()));
         }
     }
 
@@ -135,7 +136,7 @@ public class FuelTankBlockEntity extends BlockEntity {
 
         @Override
         public @NotNull FluidStack getFluidInTank(int tank) {
-            return tank == 0 ? fluid.copy() : FluidStack.EMPTY;
+            return tank == 0 ? getStoredFluid() : FluidStack.EMPTY;
         }
 
         @Override
@@ -154,18 +155,19 @@ public class FuelTankBlockEntity extends BlockEntity {
                 return 0;
             }
 
-            if (!fluid.isEmpty() && !isSameFluid(fluid, resource)) {
+            FluidStack current = getStoredFluid();
+            if (!current.isEmpty() && !isSameFluid(current, resource)) {
                 return 0;
             }
 
-            int filled = Math.min(getCapacity() - fluid.getAmount(), resource.getAmount());
+            int filled = Math.min(getCapacity() - current.getAmount(), resource.getAmount());
             if (filled <= 0) {
                 return 0;
             }
 
             if (action.execute()) {
                 FluidStack result = resource.copy();
-                result.setAmount(fluid.getAmount() + filled);
+                result.setAmount(current.getAmount() + filled);
                 fluid = result;
                 markChangedAndSync();
             }
@@ -174,7 +176,8 @@ public class FuelTankBlockEntity extends BlockEntity {
 
         @Override
         public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
-            if (resource.isEmpty() || fluid.isEmpty() || !isSameFluid(fluid, resource)) {
+            FluidStack current = getStoredFluid();
+            if (resource.isEmpty() || current.isEmpty() || !isSameFluid(current, resource)) {
                 return FluidStack.EMPTY;
             }
             return drain(resource.getAmount(), action);
@@ -182,16 +185,18 @@ public class FuelTankBlockEntity extends BlockEntity {
 
         @Override
         public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
-            if (maxDrain <= 0 || fluid.isEmpty()) {
+            FluidStack current = getStoredFluid();
+            if (maxDrain <= 0 || current.isEmpty()) {
                 return FluidStack.EMPTY;
             }
 
-            int drained = Math.min(maxDrain, fluid.getAmount());
-            FluidStack result = fluid.copy();
+            int drained = Math.min(maxDrain, current.getAmount());
+            FluidStack result = current.copy();
             result.setAmount(drained);
 
             if (action.execute()) {
-                fluid.shrink(drained);
+                current.shrink(drained);
+                fluid = current;
                 if (fluid.getAmount() <= 0) {
                     fluid = FluidStack.EMPTY;
                 }
@@ -203,5 +208,14 @@ public class FuelTankBlockEntity extends BlockEntity {
         private boolean isSameFluid(FluidStack first, FluidStack second) {
             return first.getFluid() == second.getFluid() && Objects.equals(first.getTag(), second.getTag());
         }
+    }
+
+    private FluidStack getStoredFluid() {
+        FluidStack stored = fluid.copy();
+        int capacity = getCapacity();
+        if (!stored.isEmpty() && capacity > 0 && stored.getAmount() > capacity) {
+            stored.setAmount(capacity);
+        }
+        return stored;
     }
 }
