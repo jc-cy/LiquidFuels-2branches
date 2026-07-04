@@ -1,5 +1,6 @@
 package com.g1739.liquidfuels.util;
 
+import com.g1739.liquidfuels.item.FuelTankItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -52,12 +53,25 @@ public final class FuelTankContents {
 
     public static boolean consumeFuelUnit(ItemStack stack) {
         FluidStack fluid = getFluid(stack);
+        if (stack.getItem() instanceof FuelTankItem tankItem) {
+            int capacity = tankItem.getCapacity();
+            if (capacity <= 0) {
+                return false;
+            }
+            if (fluid.getAmount() > capacity) {
+                fluid.setAmount(capacity);
+            }
+        }
         if (fluid.getAmount() < FUEL_UNIT_MB) {
             return false;
         }
 
         fluid.shrink(FUEL_UNIT_MB);
-        setFluid(stack, fluid);
+        if (fluid.isEmpty() || fluid.getAmount() <= 0) {
+            clearFluid(stack);
+        } else {
+            setFluid(stack, fluid);
+        }
         return true;
     }
 

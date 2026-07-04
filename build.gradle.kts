@@ -11,7 +11,7 @@ val immersiveAircraftVersion: String = "1.4.6+1.21.1+neoforge"
 
 val modId: String = "liquidfuels"
 val modName: String = "Liquid Fuels"
-val modVersion: String = "0.1.1"
+val modVersion: String = "0.2.0"
 val modGroupId: String = "com.g1739.liquidfuels"
 val modAuthors: String = "交错次元"
 val modCredits: String = "美术: witzig_heidi(鱼)"

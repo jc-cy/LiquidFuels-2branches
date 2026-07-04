@@ -1,5 +1,6 @@
 package com.g1739.liquidfuels;
 
+import com.electronwill.nightconfig.core.Config;
 import com.g1739.liquidfuels.config.LiquidFuelConfig;
 import com.g1739.liquidfuels.registry.LiquidFuelBlockEntities;
 import com.g1739.liquidfuels.registry.LiquidFuelBlocks;
@@ -18,6 +19,8 @@ public final class LiquidFuels {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public LiquidFuels(ModContainer modContainer, IEventBus modBus) {
+        Config.setInsertionOrderPreserved(true);
+
         LiquidFuelBlocks.register(modBus);
         LiquidFuelItems.register(modBus);
         LiquidFuelBlockEntities.register(modBus);

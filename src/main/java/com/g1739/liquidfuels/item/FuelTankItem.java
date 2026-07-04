@@ -32,15 +32,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class FuelTankItem extends BlockItem {
-    private final int capacity;
-
-    public FuelTankItem(FuelTankBlock block, int capacity, Item.Properties properties) {
+    public FuelTankItem(FuelTankBlock block, Item.Properties properties) {
         super(block, properties);
-        this.capacity = capacity;
     }
 
     public int getCapacity() {
-        return capacity;
+        return getBlock() instanceof FuelTankBlock tank ? tank.getCapacity() : 0;
     }
 
     public static ItemStack createFilledStack(FuelTankBlock block, FluidStack fluid) {
@@ -76,7 +73,7 @@ public class FuelTankItem extends BlockItem {
 
     @Override
     public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-        FluidStack fluid = FuelTankContents.getFluid(itemStack);
+        FluidStack fluid = getUsableFluid(itemStack);
         if (fluid.getAmount() < FuelTankContents.FUEL_UNIT_MB) {
             return 0;
         }
@@ -84,8 +81,20 @@ public class FuelTankItem extends BlockItem {
     }
 
     public static boolean canUseStoredFuel(ItemStack stack) {
-        FluidStack fluid = FuelTankContents.getFluid(stack);
+        FluidStack fluid = getUsableFluid(stack);
         return fluid.getAmount() >= FuelTankContents.FUEL_UNIT_MB && LiquidFuelConfig.getBurnTimeForUnit(fluid.getFluid()) > 0;
+    }
+
+    private static FluidStack getUsableFluid(ItemStack stack) {
+        if (!(stack.getItem() instanceof FuelTankItem tankItem)) {
+            return FluidStack.EMPTY;
+        }
+        FluidStack fluid = FuelTankContents.getFluid(stack);
+        int capacity = tankItem.getCapacity();
+        if (!fluid.isEmpty() && capacity > 0 && fluid.getAmount() > capacity) {
+            fluid.setAmount(capacity);
+        }
+        return fluid;
     }
 
     @Override
@@ -115,7 +124,8 @@ public class FuelTankItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        FluidStack fluid = FuelTankContents.getFluid(stack);
+        int capacity = getCapacity();
+        FluidStack fluid = getUsableFluid(stack);
         if (fluid.isEmpty()) {
             tooltip.add(Component.translatable("tooltip.liquidfuels.empty", capacity).withStyle(ChatFormatting.GRAY));
         } else {
@@ -135,7 +145,8 @@ public class FuelTankItem extends BlockItem {
         if (fluid.isEmpty()) {
             return 0;
         }
-        return Math.round(13.0F * fluid.getAmount() / capacity);
+        int capacity = getCapacity();
+        return capacity <= 0 ? 0 : Math.min(13, Math.round(13.0F * Math.min(fluid.getAmount(), capacity) / capacity));
     }
 
     @Override
@@ -158,7 +169,7 @@ public class FuelTankItem extends BlockItem {
         FluidStack sourceFluid = new FluidStack(fluidState.getType(), FuelTankContents.BUCKET_MB);
         ItemStack target = held.getCount() > 1 ? held.copy() : held;
         target.setCount(1);
-        FuelTankItemFluidHandler handler = new FuelTankItemFluidHandler(target, capacity);
+        FuelTankItemFluidHandler handler = new FuelTankItemFluidHandler(target);
         if (handler.fill(sourceFluid, IFluidHandler.FluidAction.SIMULATE) < sourceFluid.getAmount()) {
             return InteractionResult.PASS;
         }

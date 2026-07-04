@@ -31,6 +31,7 @@ public final class LiquidFuelJeiCategory implements IRecipeCategory<LiquidFuelJe
 
     private static final Component TITLE = Component.translatable("jei.liquidfuels.liquid_fuel");
     private static final ResourceLocation FURNACE_TEXTURE = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/container/furnace.png");
+    private static final ResourceLocation FURNACE_BURN_PROGRESS = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/sprites/container/furnace/burn_progress.png");
     private static final int WIDTH = 98;
     private static final int HEIGHT = 26;
     private static final int FLUID_SLOT_X = 6;
@@ -54,7 +55,7 @@ public final class LiquidFuelJeiCategory implements IRecipeCategory<LiquidFuelJe
         this.slot = guiHelper.getSlotDrawable();
         this.arrowBackground = guiHelper.createDrawable(FURNACE_TEXTURE, 79, 34, 24, 16);
         this.arrowAnimated = guiHelper.createAnimatedDrawable(
-                guiHelper.createDrawable(FURNACE_TEXTURE, 176, 14, 24, 16),
+                guiHelper.drawableBuilder(FURNACE_BURN_PROGRESS, 0, 0, 24, 16).setTextureSize(24, 16).build(),
                 80,
                 IDrawableAnimated.StartDirection.LEFT,
                 false

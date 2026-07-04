@@ -13,7 +13,7 @@ authors = "交错次元"
 credits = "美术: witzig_heidi(鱼)"
 description = '''Liquid Fuels / 液体燃料 是一个配置驱动的通用流体燃料转换模组。
 
-它提供小油桶、中油桶、大油桶三种可携带、可放置的储液容器，容量分别为 1000 mB、5000 mB、20000 mB。
+它提供小油桶、中油桶、大油桶三种可携带、可放置的储液容器，默认容量分别为 1000 mB、5000 mB、20000 mB，并可在配置中分别调整。
 油桶物品与方块都暴露 NeoForge 标准流体能力，可与流体容器、管道和其他模组的流体系统交互。
 玩家可以通过全局配置 config/liquidfuels-common.toml 声明可燃流体，支持精确流体 ID 与 #namespace:tag 流体标签。
 配置值按每 1000 mB 的燃烧 tick 填写；实际作为燃料时每次消耗 100 mB，保留油桶本体。
@@ -28,7 +28,7 @@ Chinese Notice
 
 Liquid Fuels / 液体燃料 is a configuration-driven universal fluid fuel converter.
 
-It adds small, medium, and large fuel tanks with 1000 mB, 5000 mB, and 20000 mB capacity.
+It adds small, medium, and large fuel tanks with 1000 mB, 5000 mB, and 20000 mB default capacity, each adjustable in the config.
 Tank items and placed tank blocks expose standard NeoForge fluid capabilities for interaction with fluid containers, pipes, and other mods.
 Players can define burnable fluids in the global config file config/liquidfuels-common.toml using exact fluid ids or #namespace:tag fluid tags.
 Config values are burn ticks per 1000 mB; each fuel use consumes 100 mB and keeps the tank item.

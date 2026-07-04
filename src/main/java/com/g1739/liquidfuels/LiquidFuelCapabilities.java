@@ -19,17 +19,17 @@ public final class LiquidFuelCapabilities {
 
         event.registerItem(
                 Capabilities.FluidHandler.ITEM,
-                (stack, context) -> new FuelTankItemFluidHandler(stack, LiquidFuelItems.SMALL_FUEL_TANK.get().getCapacity()),
+                (stack, context) -> new FuelTankItemFluidHandler(stack),
                 LiquidFuelItems.SMALL_FUEL_TANK.get()
         );
         event.registerItem(
                 Capabilities.FluidHandler.ITEM,
-                (stack, context) -> new FuelTankItemFluidHandler(stack, LiquidFuelItems.FUEL_TANK.get().getCapacity()),
+                (stack, context) -> new FuelTankItemFluidHandler(stack),
                 LiquidFuelItems.FUEL_TANK.get()
         );
         event.registerItem(
                 Capabilities.FluidHandler.ITEM,
-                (stack, context) -> new FuelTankItemFluidHandler(stack, LiquidFuelItems.LARGE_FUEL_TANK.get().getCapacity()),
+                (stack, context) -> new FuelTankItemFluidHandler(stack),
                 LiquidFuelItems.LARGE_FUEL_TANK.get()
         );
     }
