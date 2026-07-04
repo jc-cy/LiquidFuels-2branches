@@ -45,13 +45,14 @@ public final class InventoryFluidTransfer {
             return true;
         }
 
-        menu.setCarried(result.sourceContainer().isEmpty() ? ItemStack.EMPTY : result.sourceContainer());
         if (tankStack.getCount() == 1) {
             if (!slot.mayPlace(result.targetContainer())) {
                 return false;
             }
+            menu.setCarried(result.sourceContainer().isEmpty() ? ItemStack.EMPTY : result.sourceContainer());
             slot.set(result.targetContainer());
         } else {
+            menu.setCarried(result.sourceContainer().isEmpty() ? ItemStack.EMPTY : result.sourceContainer());
             tankStack.shrink(1);
             slot.set(tankStack);
             giveOrDrop(player, result.targetContainer());
